@@ -1,4 +1,20 @@
-﻿using System;
+﻿/*
+
+Сюда крч будем заметки писать.
+Зачекай потом в сервере эту дичь
+
+*/
+
+
+
+
+
+
+
+
+
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

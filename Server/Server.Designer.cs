@@ -28,12 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.StatusBox = new System.Windows.Forms.TextBox();
+            this.StartServer = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // StatusBox
+            // 
+            this.StatusBox.Location = new System.Drawing.Point(158, 12);
+            this.StatusBox.Multiline = true;
+            this.StatusBox.Name = "StatusBox";
+            this.StatusBox.ReadOnly = true;
+            this.StatusBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.StatusBox.Size = new System.Drawing.Size(330, 444);
+            this.StatusBox.TabIndex = 3;
+            // 
+            // StartServer
+            // 
+            this.StartServer.Location = new System.Drawing.Point(12, 12);
+            this.StartServer.Name = "StartServer";
+            this.StartServer.Size = new System.Drawing.Size(140, 23);
+            this.StartServer.TabIndex = 2;
+            this.StartServer.Text = "Запустить сервер";
+            this.StartServer.UseVisualStyleBackColor = true;
+            this.StartServer.Click += new System.EventHandler(this.StartServer_Click);
+            // 
+            // Server
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1043, 591);
+            this.Controls.Add(this.StatusBox);
+            this.Controls.Add(this.StartServer);
+            this.Name = "Server";
             this.Text = "Server";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.TextBox StatusBox;
+        private System.Windows.Forms.Button StartServer;
     }
 }
