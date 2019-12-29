@@ -66,7 +66,7 @@
             this.Controls.Add(this.MessageTextBox);
             this.Controls.Add(this.CharListBox);
             this.Name = "Chat";
-            this.Text = "Chat";
+            this.Text = "Chat2";
             this.ResumeLayout(false);
             this.PerformLayout();
 
