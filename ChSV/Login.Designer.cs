@@ -1,6 +1,6 @@
 ﻿namespace ChSV
 {
-    partial class Login2
+    partial class Login
     {
         /// <summary>
         /// Required designer variable.

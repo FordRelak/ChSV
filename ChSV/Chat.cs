@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ChSV
 {
-    public partial class Login2 : Form
+    public partial class Chat : Form
     {
-        public Login2()
+        public Chat()
         {
             InitializeComponent();
         }
