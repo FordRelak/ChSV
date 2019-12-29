@@ -1,6 +1,6 @@
 ﻿namespace ChSV
 {
-    partial class Chat2
+    partial class Chat
     {
         /// <summary>
         /// Обязательная переменная конструктора.

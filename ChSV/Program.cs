@@ -16,7 +16,7 @@ namespace ChSV
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Chat2());
+            Application.Run(new Chat());
         }
     }
 }

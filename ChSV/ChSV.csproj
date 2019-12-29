@@ -46,25 +46,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chat2.cs">
+    <Compile Include="Chat.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Chat2.Designer.cs">
-      <DependentUpon>Chat2.cs</DependentUpon>
+    <Compile Include="Chat.Designer.cs">
+      <DependentUpon>Chat.cs</DependentUpon>
     </Compile>
-    <Compile Include="Login22.cs">
+    <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Login22.Designer.cs">
-      <DependentUpon>Login22.cs</DependentUpon>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Chat2.resx">
-      <DependentUpon>Chat2.cs</DependentUpon>
+    <EmbeddedResource Include="Chat.resx">
+      <DependentUpon>Chat.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login22.resx">
-      <DependentUpon>Login22.cs</DependentUpon>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
