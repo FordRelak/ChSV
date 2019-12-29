@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Server
 {
-    public partial class Server : Form
+    public partial class Server2 : Form
     {
-        public Server()
+        public Server2()
         {
             InitializeComponent();
         }
