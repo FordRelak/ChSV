@@ -25,9 +25,10 @@ namespace ChSV
         //
         static string address = "88.135.50.215";
         static int port = 8008;
-        
+
         //
-        Socket socket;
+        TcpClient tcpClient;
+        NetworkStream stream;
 
         //
         private void Login_Load(object sender, EventArgs e)
@@ -37,9 +38,14 @@ namespace ChSV
                 //
                 IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(address), port);
                 //
-                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                tcpClient = new TcpClient();
                 //
-                socket.Connect(iPEndPoint);
+                tcpClient.Connect(address, port);
+                if (!tcpClient.Connected)
+                {
+                    throw new Exception("Не подключен");
+                }
+                stream = tcpClient.GetStream();
             }
             catch (Exception ex)
             {
@@ -49,17 +55,27 @@ namespace ChSV
 
         }
 
-
         //
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            Thread thread = new Thread(new ThreadStart(SendLoginPass));
-            thread.Start();
+            try
+            {
+                if (!tcpClient.Connected)
+                {
+                    throw new Exception("Не подключен");
+                }
+                Thread thread = new Thread(new ThreadStart(SendLoginPass));
+                thread.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         //
         string LoginZ = "LoginZ";
-        
+
         //
         string login, pass;
 
@@ -76,7 +92,7 @@ namespace ChSV
                 string message = LoginZ + ' ' + login + ' ' + pass;
                 byte[] data = Encoding.Unicode.GetBytes(message);
                 //Отправка
-                socket.Send(data);
+                stream.Write(data, 0, data.Length);
 
                 //Переменные для получение сообщения
                 int bytes = 0; //кол-во полученных байт. то же самое что и data.Length
@@ -86,9 +102,9 @@ namespace ChSV
                 //Получение ответа
                 do
                 {
-                    bytes = socket.Receive(data, data.Length, 0);
+                    bytes = stream.Read(data, 0, data.Length);
                     answer.Append(Encoding.Unicode.GetString(data, 0, bytes));
-                } while (socket.Available > 0);
+                } while (stream.DataAvailable);
 
                 string ans = answer.ToString();
 
@@ -109,13 +125,18 @@ namespace ChSV
                 {
                     MessageBox.Show(ans);
                 }
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        //
+        private void Login_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            stream.Close();
+            tcpClient.Close();
         }
 
     }
