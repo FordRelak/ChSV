@@ -107,7 +107,7 @@ namespace Server
             }
         }
 
-        async void Listner()
+        void Listner()
         {
             //получаем адреса для запуска сокета
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(server), port);
@@ -139,13 +139,16 @@ namespace Server
                         bytes = handler.Receive(data);
                         builder.Append(Encoding.Unicode.GetString(data, 0, bytes));
                     } while (handler.Available > 0);
-                    string str = builder.ToString(); // Строка
+                    string str = builder.ToString(); // Итоговая строка
 
-                    // 
-                    string[] lp = str.Split(' '); 
+                    // Разделяем str на слова
+                    string[] lp = str.Split(' ');
+                    
+                    // Ветвление кода на основе типа запроса из lp[0]
+                    // lp[0] - первое слово в str, означающее тип запроса
                     switch (lp[0])
                     {
-                        case "LoginZ":
+                        case "LoginZ": // Авторизация
                             string[] ServAnsw = new string[2];
                             ServAnsw = CheckUser(lp[1], lp[2]);
 
@@ -154,20 +157,29 @@ namespace Server
                             {
                                 data = Encoding.Unicode.GetBytes((ServAnsw[0] + ServAnsw[1]).ToString());
                                 handler.Send(data);
-                                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Отправлено разрешение на соединение";
+                                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Успешное подключение: " + handler.LocalEndPoint.ToString();
                             }
                             else
                             {
                                 data = Encoding.Unicode.GetBytes((ServAnsw[0] + ServAnsw[1]).ToString());
                                 handler.Send(data);
-                                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Отправлено запрет на соединение";
+                                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Отклонено: " + handler.LocalEndPoint.ToString();
                             }
 
                             break;
-                            
+                        case "FileZ":
 
 
 
+
+
+                            break;
+
+                        default:
+                            data = Encoding.Unicode.GetBytes("error");
+                            handler.Send(data);
+                            StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Отправлено сообщение об ошибке: " + handler.LocalEndPoint.ToString();
+                            break;
                     }
 
 
@@ -189,7 +201,7 @@ namespace Server
             }
         }
 
-
+        // Метод для определения правильности введённых данных для входа
         private string[] CheckUser(string login, string pass)
         {
             string[] str = new string[2];
