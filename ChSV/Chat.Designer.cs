@@ -56,6 +56,7 @@
             this.SendButton.TabIndex = 2;
             this.SendButton.Text = "Отправить";
             this.SendButton.UseVisualStyleBackColor = true;
+            this.SendButton.Click += new System.EventHandler(this.SendButton_Click);
             // 
             // Chat
             // 

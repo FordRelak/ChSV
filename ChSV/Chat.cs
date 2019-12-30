@@ -16,5 +16,10 @@ namespace ChSV
         {
             InitializeComponent();
         }
+
+        private void SendButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
