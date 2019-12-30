@@ -65,7 +65,7 @@ namespace Server
             //
 
             var exePath = AppDomain.CurrentDomain.BaseDirectory; // Путь до .exe файла.
-            var path = System.IO.Path.Combine(exePath, "FT.db"); // Путь до .exe файла + название БД
+            var path = System.IO.Path.Combine(exePath, "ChSV.db"); // Путь до .exe файла + название БД
             constr = $"Data Source={path};Version=3;"; // Строка подключения к БД
 
             // Подключение к БД
@@ -102,10 +102,18 @@ namespace Server
             else
             {
                 bw.CancelAsync(); // Закрытие сервера
+                if (handler.Connected)
+                {
+                    handler.Shutdown(SocketShutdown.Both);
+                    handler.Close();
+                }
                 StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Сервер закрыт";
                 CheckW = false;
             }
         }
+
+
+        Socket handler;
 
         void Listner()
         {
@@ -128,7 +136,7 @@ namespace Server
 
                 while (!bw.CancellationPending)
                 {
-                    Socket handler = listenSocket.Accept();
+                    handler = listenSocket.Accept();
 
                     //получаем сообщение
                     StringBuilder builder = new StringBuilder();
@@ -174,7 +182,10 @@ namespace Server
 
 
                             break;
+                        case "PingZ":
+                            StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Пинг от: " + handler.LocalEndPoint.ToString();
 
+                            break;
                         default:
                             data = Encoding.Unicode.GetBytes("error");
                             handler.Send(data);
@@ -208,7 +219,7 @@ namespace Server
 
             // Поиск логина/пароля
             CMD = DB.CreateCommand();
-            CMD.CommandText = "SELECT * FROM user;";
+            CMD.CommandText = "SELECT * FROM users_ChSV;";
             SQL = CMD.ExecuteReader();
             if (SQL.HasRows)
             {
