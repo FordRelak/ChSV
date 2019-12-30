@@ -29,30 +29,12 @@ namespace ChSV
         //
         TcpClient tcpClient;
         NetworkStream stream;
+        Thread threadSend, threadLogin;
 
         //
         private void Login_Load(object sender, EventArgs e)
         {
-            try
-            {
-                //
-                IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(address), port);
-                //
-                tcpClient = new TcpClient();
-                //
-                tcpClient.Connect(address, port);
-                if (!tcpClient.Connected)
-                {
-                    throw new Exception("Не подключен");
-                }
-                stream = tcpClient.GetStream();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-            }
-
+            //
         }
 
         //
@@ -60,16 +42,44 @@ namespace ChSV
         {
             try
             {
-                if (!tcpClient.Connected)
-                {
-                    throw new Exception("Не подключен");
-                }
-                Thread thread = new Thread(new ThreadStart(SendLoginPass));
-                thread.Start();
+                LoginButton.Enabled = false;
+
+                threadLogin = new Thread(new ThreadStart(LoginThread));
+                threadLogin.Start();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoginThread()
+        {
+            try
+            {
+                //
+                tcpClient = new TcpClient();
+                //Удалось ли подключиться 
+                var result = tcpClient.BeginConnect(IPAddress.Parse(address), port, null, null);
+                var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1));
+                //
+                if (!success)
+                {
+                    throw new Exception("Не подключен");
+                }
+                stream = tcpClient.GetStream();
+
+                threadSend = new Thread(new ThreadStart(SendLoginPass));
+                threadSend.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            finally
+            {
+                LoginButton.Enabled = true;
             }
         }
 
@@ -111,7 +121,7 @@ namespace ChSV
                 //Что делать с ответом?!
                 if (ans.Contains("true"))
                 {
-                    MessageBox.Show(ans.Remove(0, 4));
+                    MessageBox.Show(ans.Remove(0, 4), "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     //Hide();
                     //Chat chat = new Chat();
                     //chat.ShowDialog();
@@ -119,24 +129,55 @@ namespace ChSV
                 }
                 else if (ans.Contains("false"))
                 {
-                    MessageBox.Show(ans.Remove(0, 5));
+                    throw new Exception(ans.Remove(0, 5));
                 }
                 else
                 {
-                    MessageBox.Show(ans);
+                    throw new Exception(ans);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                LoginButton.Enabled = true;
+                CloseAll();
+            }
         }
 
         //
         private void Login_FormClosed(object sender, FormClosedEventArgs e)
         {
-            stream.Close();
-            tcpClient.Close();
+            CloseAll();
+        }
+
+        //Закрывает все сокеты, клиенты, потоки и всю такую дичь
+        private void CloseAll()
+        {
+            if (stream != null)
+            {
+                stream.Close();
+            }
+            if (tcpClient != null)
+            {
+                tcpClient.Close();
+            }
+            if (threadSend != null)
+            {
+                if (threadSend.IsAlive)
+                {
+                    threadSend.Abort();
+                }
+            }
+            if (threadLogin != null)
+            {
+                if (threadLogin.IsAlive)
+                {
+                    threadLogin.Abort();
+                }
+            }
         }
 
     }

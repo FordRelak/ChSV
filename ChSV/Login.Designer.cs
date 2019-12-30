@@ -37,7 +37,7 @@
             // 
             // LoginButton
             // 
-            this.LoginButton.Location = new System.Drawing.Point(81, 58);
+            this.LoginButton.Location = new System.Drawing.Point(146, 58);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(75, 23);
             this.LoginButton.TabIndex = 3;
@@ -49,14 +49,14 @@
             // 
             this.LoginTextBox.Location = new System.Drawing.Point(56, 6);
             this.LoginTextBox.Name = "LoginTextBox";
-            this.LoginTextBox.Size = new System.Drawing.Size(100, 20);
+            this.LoginTextBox.Size = new System.Drawing.Size(165, 20);
             this.LoginTextBox.TabIndex = 1;
             // 
             // PassTextBox
             // 
             this.PassTextBox.Location = new System.Drawing.Point(56, 32);
             this.PassTextBox.Name = "PassTextBox";
-            this.PassTextBox.Size = new System.Drawing.Size(100, 20);
+            this.PassTextBox.Size = new System.Drawing.Size(165, 20);
             this.PassTextBox.TabIndex = 2;
             // 
             // label1

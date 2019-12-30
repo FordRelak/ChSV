@@ -31,6 +31,7 @@
             this.CharListBox = new System.Windows.Forms.ListBox();
             this.MessageTextBox = new System.Windows.Forms.TextBox();
             this.SendButton = new System.Windows.Forms.Button();
+            this.MemberTextBox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // CharListBox
@@ -58,16 +59,26 @@
             this.SendButton.UseVisualStyleBackColor = true;
             this.SendButton.Click += new System.EventHandler(this.SendButton_Click);
             // 
+            // MemberTextBox
+            // 
+            this.MemberTextBox.FormattingEnabled = true;
+            this.MemberTextBox.Location = new System.Drawing.Point(559, 12);
+            this.MemberTextBox.Name = "MemberTextBox";
+            this.MemberTextBox.Size = new System.Drawing.Size(185, 355);
+            this.MemberTextBox.TabIndex = 3;
+            // 
             // Chat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(756, 410);
+            this.Controls.Add(this.MemberTextBox);
             this.Controls.Add(this.SendButton);
             this.Controls.Add(this.MessageTextBox);
             this.Controls.Add(this.CharListBox);
             this.Name = "Chat";
             this.Text = "Chat2";
+            this.Load += new System.EventHandler(this.Chat_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -78,6 +89,7 @@
         private System.Windows.Forms.ListBox CharListBox;
         private System.Windows.Forms.TextBox MessageTextBox;
         private System.Windows.Forms.Button SendButton;
+        private System.Windows.Forms.ListBox MemberTextBox;
     }
 }
 
