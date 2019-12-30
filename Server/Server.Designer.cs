@@ -67,8 +67,7 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox StatusBox;
         private System.Windows.Forms.Button StartServer;
+        protected System.Windows.Forms.TextBox StatusBox;
     }
 }
