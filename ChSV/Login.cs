@@ -23,7 +23,7 @@ namespace ChSV
         }
 
         //
-        static string address = "88.135.50.215";
+        static string address = "192.168.1.11";
         static int port = 8008;
         
         //

@@ -51,6 +51,7 @@
             this.LoginTextBox.Name = "LoginTextBox";
             this.LoginTextBox.Size = new System.Drawing.Size(100, 20);
             this.LoginTextBox.TabIndex = 1;
+            this.LoginTextBox.Text = "Ivan";
             // 
             // PassTextBox
             // 
@@ -58,6 +59,7 @@
             this.PassTextBox.Name = "PassTextBox";
             this.PassTextBox.Size = new System.Drawing.Size(100, 20);
             this.PassTextBox.TabIndex = 1;
+            this.PassTextBox.Text = "Stuk";
             // 
             // label1
             // 
