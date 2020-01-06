@@ -145,63 +145,25 @@ namespace Server
             
             try
             {
-                while (true)
-                {
-                    TcpClient client = server.AcceptTcpClient();
-
-                    CO.Add(new ClientObject(client, this));
-
-                    User_LB.Items.Add(CO.Last().MYIpClient);
-                    int counter = 0;
-                    foreach (var item in CO)
-                    {
-                        if (item.MYIpClient == CO.Last().MYIpClient)                    
-                            counter++;
-                    }
-
-                    if (counter > 1)
-                    {
-                        //CO.Remove(CO.Last());
-                        CO.Last().SecondConnect = true;
-                        //continue;
-                    }
-
-                    BWL.Add(new BackgroundWorker());
-                    BWL.Last().WorkerSupportsCancellation = true;
-                    
-                    BWL.Last().DoWork += (obj, ea) => CO.Last().ConnectStream(); // Метод проверки соединений
-                    BWL.Last().RunWorkerAsync(); // 
-                    CO.Last().bw_s = BWL.Last();
-                   
-                }
+                bw = new BackgroundWorker(); 
+                bw.WorkerSupportsCancellation = true;
+                bw.DoWork += (obj, ea) => Listner(); // Метод прослушки порта 8008
+                bw.RunWorkerAsync(); // Открытие сервера
+                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Сервер запущен";
+                CheckW = true;
             }
-            catch (Exception ex)
+            else
             {
-                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Ошибка: " + ex.ToString() + "\r\n Место ошибки: Метод Listner";
-                server = null;
-                
-                while (!CheckServerStatus) { }
-                Thread.Sleep(50);
-                Listner();
-            } 
+                bw.CancelAsync(); // Закрытие сервера
+                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Сервер закрыт";
+                CheckW = false;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        void ActivUsersList()
+        void Listner()
         {
-            while(true)
-            {
-                Thread.Sleep(5000);
-                try
-                {
-                    if (CO.Count == 0)
-                        continue;
-                    if (bw2.CancellationPending)
-                    {
-                        break;
-                    }
+            //получаем адреса для запуска сокета
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(server), port);
 
                     string StreamMes = "ActivUsersListZ";
                     Ping x; PingReply reply;
@@ -269,6 +231,7 @@ namespace Server
                 }
                 catch(Exception)
                 {
+                    Socket handler = listenSocket.Accept();
 
                 }
                 if (item.Connected == true)
@@ -355,24 +318,16 @@ namespace Server
             }
         }
 
-        /// <summary>
-        /// Метод для завершения всех активных соединений
-        /// </summary>
-        void MethodKP()
-        {
-            
-            foreach (var item in CO)
-            {
-                if (CO.Count == 0)
-                    break;
-                else
-                {
-                    KillConnect(item, item.bw_s, 3);
-                    MethodKP();
-                    break;
-                }
-            }
-        }
+
+
+                            break;
+
+                        default:
+                            data = Encoding.Unicode.GetBytes("error");
+                            handler.Send(data);
+                            StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Отправлено сообщение об ошибке: " + handler.LocalEndPoint.ToString();
+                            break;
+                    }
 
         
         /// <summary> Метод для завершения соединения </summary>
