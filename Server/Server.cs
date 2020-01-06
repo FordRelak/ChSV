@@ -119,6 +119,7 @@ namespace Server
 
             Thread.Sleep(10);
 
+
             bw2 = new BackgroundWorker();
             bw2.WorkerSupportsCancellation = true;
             bw2.DoWork += (obj, ea) => ActivUsersList(); // Метод прослушки порта 8008
@@ -135,6 +136,7 @@ namespace Server
         }
 
 
+
         void Listner()
         {
             IPAddress IPAddress = IPAddress.Parse(IP_Server);
@@ -145,25 +147,65 @@ namespace Server
             
             try
             {
-                bw = new BackgroundWorker(); 
-                bw.WorkerSupportsCancellation = true;
-                bw.DoWork += (obj, ea) => Listner(); // Метод прослушки порта 8008
-                bw.RunWorkerAsync(); // Открытие сервера
-                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Сервер запущен";
-                CheckW = true;
+                while (true)
+                {
+                    TcpClient client = server.AcceptTcpClient();
+
+                    CO.Add(new ClientObject(client, this));
+
+                    User_LB.Items.Add(CO.Last().MYIpClient);
+                    int counter = 0;
+                    foreach (var item in CO)
+                    {
+                        if (item.MYIpClient == CO.Last().MYIpClient)                    
+                            counter++;
+                    }
+
+                    if (counter > 1)
+                    {
+                        //CO.Remove(CO.Last());
+                        CO.Last().SecondConnect = true;
+                        //continue;
+                    }
+
+                    BWL.Add(new BackgroundWorker());
+                    BWL.Last().WorkerSupportsCancellation = true;
+                    
+                    BWL.Last().DoWork += (obj, ea) => CO.Last().ConnectStream(); // Метод проверки соединений
+                    BWL.Last().RunWorkerAsync(); // 
+                    CO.Last().bw_s = BWL.Last();
+                   
+                }
             }
-            else
+            catch (Exception ex)
             {
-                bw.CancelAsync(); // Закрытие сервера
-                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Сервер закрыт";
-                CheckW = false;
-            }
+                StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Ошибка: " + ex.ToString() + "\r\n Место ошибки: Метод Listner";
+                server = null;
+                
+                while (!CheckServerStatus) { }
+                Thread.Sleep(50);
+                Listner();
+            } 
         }
 
-        void Listner()
+        /// <summary>
+        /// 
+        /// </summary>
+        void ActivUsersList()
         {
-            //получаем адреса для запуска сокета
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(server), port);
+            while(true)
+            {
+                Thread.Sleep(5000);
+                try
+                {
+
+                    if (CO.Count == 0)
+                        continue;
+                    if (bw2.CancellationPending)
+                    {
+                        break;
+                    }
+
 
                     string StreamMes = "ActivUsersListZ";
                     Ping x; PingReply reply;
@@ -231,7 +273,6 @@ namespace Server
                 }
                 catch(Exception)
                 {
-                    Socket handler = listenSocket.Accept();
 
                 }
                 if (item.Connected == true)
@@ -271,6 +312,7 @@ namespace Server
             CheckServerStatus = true;
         }
 
+
         // Остановка сервера
         private void остановкаToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -303,6 +345,7 @@ namespace Server
             }
         }
 
+
         // Сохранение настроек 
         private void SavePS_TB_Click(object sender, EventArgs e)
         {
@@ -318,16 +361,24 @@ namespace Server
             }
         }
 
-
-
-                            break;
-
-                        default:
-                            data = Encoding.Unicode.GetBytes("error");
-                            handler.Send(data);
-                            StatusBox.Text += "\r\n(" + DateTime.Now.ToString() + ") Отправлено сообщение об ошибке: " + handler.LocalEndPoint.ToString();
-                            break;
-                    }
+        /// <summary>
+        /// Метод для завершения всех активных соединений
+        /// </summary>
+        void MethodKP()
+        {
+            
+            foreach (var item in CO)
+            {
+                if (CO.Count == 0)
+                    break;
+                else
+                {
+                    KillConnect(item, item.bw_s, 3);
+                    MethodKP();
+                    break;
+                }
+            }
+        }
 
         
         /// <summary> Метод для завершения соединения </summary>
