@@ -51,6 +51,7 @@
             this.LoginTextBox.Name = "LoginTextBox";
             this.LoginTextBox.Size = new System.Drawing.Size(165, 20);
             this.LoginTextBox.TabIndex = 1;
+            this.LoginTextBox.Text = "Misha";
             // 
             // PassTextBox
             // 
@@ -58,6 +59,7 @@
             this.PassTextBox.Name = "PassTextBox";
             this.PassTextBox.Size = new System.Drawing.Size(165, 20);
             this.PassTextBox.TabIndex = 2;
+            this.PassTextBox.Text = "Fed";
             // 
             // label1
             // 
@@ -89,8 +91,7 @@
             this.Controls.Add(this.LoginButton);
             this.Name = "Login";
             this.Text = "Login";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Login_FormClosed);
-            this.Load += new System.EventHandler(this.Login_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Login_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

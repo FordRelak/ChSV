@@ -28,19 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.CharListBox = new System.Windows.Forms.ListBox();
+            this.components = new System.ComponentModel.Container();
+            this.ChatListBox = new System.Windows.Forms.ListBox();
             this.MessageTextBox = new System.Windows.Forms.TextBox();
             this.SendButton = new System.Windows.Forms.Button();
-            this.MemberTextBox = new System.Windows.Forms.ListBox();
+            this.MemberListBox = new System.Windows.Forms.ListBox();
+            this.ConnectTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // CharListBox
+            // ChatListBox
             // 
-            this.CharListBox.FormattingEnabled = true;
-            this.CharListBox.Location = new System.Drawing.Point(12, 12);
-            this.CharListBox.Name = "CharListBox";
-            this.CharListBox.Size = new System.Drawing.Size(541, 355);
-            this.CharListBox.TabIndex = 0;
+            this.ChatListBox.FormattingEnabled = true;
+            this.ChatListBox.Location = new System.Drawing.Point(12, 12);
+            this.ChatListBox.Name = "ChatListBox";
+            this.ChatListBox.Size = new System.Drawing.Size(541, 355);
+            this.ChatListBox.TabIndex = 0;
             // 
             // MessageTextBox
             // 
@@ -48,6 +50,7 @@
             this.MessageTextBox.Name = "MessageTextBox";
             this.MessageTextBox.Size = new System.Drawing.Size(460, 20);
             this.MessageTextBox.TabIndex = 1;
+            this.MessageTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MessageTextBox_KeyPress);
             // 
             // SendButton
             // 
@@ -59,25 +62,32 @@
             this.SendButton.UseVisualStyleBackColor = true;
             this.SendButton.Click += new System.EventHandler(this.SendButton_Click);
             // 
-            // MemberTextBox
+            // MemberListBox
             // 
-            this.MemberTextBox.FormattingEnabled = true;
-            this.MemberTextBox.Location = new System.Drawing.Point(559, 12);
-            this.MemberTextBox.Name = "MemberTextBox";
-            this.MemberTextBox.Size = new System.Drawing.Size(185, 355);
-            this.MemberTextBox.TabIndex = 3;
+            this.MemberListBox.FormattingEnabled = true;
+            this.MemberListBox.Location = new System.Drawing.Point(559, 12);
+            this.MemberListBox.Name = "MemberListBox";
+            this.MemberListBox.Size = new System.Drawing.Size(185, 355);
+            this.MemberListBox.TabIndex = 3;
+            // 
+            // ConnectTimer
+            // 
+            this.ConnectTimer.Interval = 3000;
+            this.ConnectTimer.Tick += new System.EventHandler(this.ConnectTimer_Tick);
             // 
             // Chat
             // 
+            this.AcceptButton = this.SendButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(756, 410);
-            this.Controls.Add(this.MemberTextBox);
+            this.Controls.Add(this.MemberListBox);
             this.Controls.Add(this.SendButton);
             this.Controls.Add(this.MessageTextBox);
-            this.Controls.Add(this.CharListBox);
+            this.Controls.Add(this.ChatListBox);
             this.Name = "Chat";
-            this.Text = "Chat2";
+            this.Text = "Chat";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Chat_FormClosing);
             this.Load += new System.EventHandler(this.Chat_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -86,10 +96,11 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox CharListBox;
+        private System.Windows.Forms.ListBox ChatListBox;
         private System.Windows.Forms.TextBox MessageTextBox;
         private System.Windows.Forms.Button SendButton;
-        private System.Windows.Forms.ListBox MemberTextBox;
+        private System.Windows.Forms.ListBox MemberListBox;
+        private System.Windows.Forms.Timer ConnectTimer;
     }
 }
 
