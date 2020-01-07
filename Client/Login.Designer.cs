@@ -40,21 +40,21 @@
             this.LoginTextBox.Location = new System.Drawing.Point(59, 12);
             this.LoginTextBox.Name = "LoginTextBox";
             this.LoginTextBox.Size = new System.Drawing.Size(154, 20);
-            this.LoginTextBox.TabIndex = 0;
+            this.LoginTextBox.TabIndex = 1;
             // 
             // PassTextBox
             // 
             this.PassTextBox.Location = new System.Drawing.Point(59, 38);
             this.PassTextBox.Name = "PassTextBox";
             this.PassTextBox.Size = new System.Drawing.Size(154, 20);
-            this.PassTextBox.TabIndex = 0;
+            this.PassTextBox.TabIndex = 2;
             // 
             // LoginButton
             // 
             this.LoginButton.Location = new System.Drawing.Point(138, 64);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(75, 23);
-            this.LoginButton.TabIndex = 1;
+            this.LoginButton.TabIndex = 3;
             this.LoginButton.Text = "Войти";
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
